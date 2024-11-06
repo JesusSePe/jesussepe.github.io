@@ -1,0 +1,93 @@
+* {
+    font-family: system-ui;
+}
+
+#title {
+    text-align: center;
+}
+
+body {
+    width: 100vw;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    border: 0px;
+    margin: 0px;
+    background-color: #0d1117;
+    color: rgba(248,249,250,1);
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    width: 75vw;
+    max-width: 1380px;
+    min-width: 450px;
+    gap: 1.5em;
+}
+
+.wrapper {
+    display: flex; 
+    width: 100%;
+    justify-content: space-evenly; 
+    align-content: center;
+    flex-wrap: wrap;
+    gap: 1em; 
+}
+
+.card {
+    display:flex; 
+    flex-direction: column; 
+    gap: 1em; 
+    align-items: center; 
+    justify-content: center; 
+    border-radius: 10px; 
+    box-shadow: 0px 0px 5px -3px black; 
+    color: black; 
+    padding-top: 2em;
+    margin-top: 1em;
+    width: 9em;
+}
+
+.card-icon {
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    background: transparent; 
+    height: 105px;
+    width: 105px
+}
+
+@media screen and (max-width: 1024px) {
+    .wrapper {
+        gap: 2em; 
+    }
+    .card {
+        font-size: 0.75em;
+        gap: 0.5em; 
+        margin-top: 0.75em;
+        height: 11em;
+    }
+
+    .card-icon {
+        height: 100px;
+        width: 90px;
+    }
+}
+
+@media screen and (max-width: 750px) {
+    .wrapper {
+        gap: 1.5em; 
+    }
+    .card {
+        font-size: 0.6em;
+        gap: 0.4em; 
+        margin-top: 0.7em;
+        height: 7em;
+    }
+
+    .card-icon {
+        height: 50px;
+        width: 50px;
+    }
+}
