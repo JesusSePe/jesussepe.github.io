@@ -7,7 +7,7 @@
 }
 
 body {
-    width: 100vw;
+    width: 100%;
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -22,8 +22,27 @@ body {
     flex-direction: column;
     width: 75vw;
     max-width: 1380px;
-    min-width: 450px;
     gap: 1.5em;
+}
+
+.margin-top {
+    margin-top: 3em;
+}
+
+.bordered {
+    padding: 0.75em 1em;
+    border: solid 1px gray;
+    border-radius: 5px;
+}
+
+a.redirect-card {
+    transition: 0.5s;
+    text-decoration: none;
+    color: rgba(248,249,250,1);;
+}
+
+a.redirect-card:hover {
+    font-size: 1.1em;
 }
 
 .wrapper {
@@ -47,6 +66,7 @@ body {
     padding-top: 2em;
     margin-top: 1em;
     width: 9em;
+    padding-bottom: 1em;
 }
 
 .card-icon {
@@ -55,8 +75,10 @@ body {
     justify-content: center;
     background: transparent; 
     height: 105px;
-    width: 105px
+    width: 105px;
 }
+
+
 
 @media screen and (max-width: 1024px) {
     .wrapper {

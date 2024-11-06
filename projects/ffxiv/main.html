@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="format-detection" content="telephone=no">
+  <meta name="msapplication-tap-highlight" content="no">
+  <meta name="viewport" content="initial-scale=1, width=device-width, viewport-fit=cover">
+  <title>FFXIV character search</title>
+
+  <!-- CSS  -->
+  <link href="/projects/ffxiv/main.css" rel="stylesheet">
+  <!--Materialize icons-->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <!--Materialize css-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+</head>
+<body>
+  <nav class="white">
+    <a href="https://github.com/JesusSePe/newMaterialApp">Github Repo</a>
+  </nav>
+  <!--tabs list-->
+  <ul id="tabs" class="tabs">
+    <li class="tab col s4"><a class="active" href="#test-swipe-1">Search</a></li>
+    <li class="tab col s4"><a href="#test-swipe-2">Details</a></li>
+    <li class="tab col s4"><a href="#test-swipe-3">Character</a></li>
+  </ul>
+  <!--Search tab-->
+  <div id="test-swipe-1" class="col s12">
+    <!--Search section-->
+    <div class="col s12">Search character:
+      <div class="input-field inline">
+        <input id="charName" type="text" class="validate">
+        <label for="charName">Character</label>
+      </div>
+      <i id="search-icon" class="material-icons">search</i>
+    </div>
+    <!--Results section-->
+    <div class="col s12">
+      <ul class="collection">
+      </ul>
+    </div>
+
+  </div>
+  <!--Details tab-->
+  <div id="test-swipe-2" class="col s12">
+    <!--Character details-->
+    <div class="row">
+      <div class="col s12 m7">
+        <div>
+          <div>
+            <img id="char-img" src="" height="150em" width="150em">
+          </div>
+          <h4 id="char-name"></h4>
+          <div>
+            <div class="input-field inline col s12">
+              <label for="bio">Bio: </label>
+              <input disabled value="" id="bio" type="text">
+            </div>
+            <div class="input-field inline col s12">
+              <label for="nameday">Nameday: </label>
+              <input disabled value="" id="nameday" type="text">
+            </div>
+            <div class="col s12">
+              <div class="input-field inline col s6">
+                <label for="job">Class/Job: </label>
+                <input disabled value="" id="job" type="text">
+              </div>
+              <div class="input-field inline col s6">
+                <label for="lvl">Level: </label>
+                <input disabled value="" id="lvl" type="text">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--End of character details-->
+  </div>
+  <!--Character tab-->
+  <div id="test-swipe-3" class="col s12">
+    <!--Character full image-->
+    <img id="character" src="">
+    <!--End of character full image-->
+  </div>
+
+  <!--Scripts-->
+  <!--JQuery-->
+  <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <!--Materialize js-->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  <!--JS Code. Sololearn doesn't allow external API calls from the JS section, but from the HTML section.-->
+  <script>
+
+    // Code orinigally posted on https://github.com/JesusSePe/newMaterialApp
+    // init.js
+    (function($){
+    $(function(){
+
+        $('.sidenav').sidenav();
+        $('.tabs').tabs({"swipeable":true});
+
+    }); // end of document ready
+    })(jQuery); // end of jQuery name space
+
+    // Add all event listeners once the page is loaded
+    $( document ).ready(function() {
+    onDeviceReady();
+    });
+
+
+    function searchChar() {
+    let name = $('#charName').val().split(" ").join("+").toLowerCase();
+    $.ajax({
+        method: "GET",
+        url: "https://xivapi.com/character/search?name=" + name,
+        dataType: "json",
+    }).done(function(msg){
+        showResults(msg);
+    }).fail(function(){
+        alert("Ajax Error");
+    });
+    }
+
+
+    async function showResults(result) {
+    $('.collection:first-of-type').empty();
+    var characters = await result.Results;
+    for (let index = 0; index < characters.length; index++) {
+        const character = characters[index];
+        $('.collection:first-of-type').append('<li charid="'+character["ID"]+'" class="collection-item" style="display: flex;align-items: center;"><img src="'+character['Avatar']+'" class="circle responsive-img">'+character["Name"]+'<a href="#!" class="secondary-content right"><i class="material-icons">send</i></a></li>');
+    };
+    $('.secondary-content').click(function() {
+        // Save the parent node in a variable
+        varParent = $(this).parent();
+        // Clone parent, delete children and get the inner text
+        parentText = varParent.clone().children().remove().end().text();
+        var tabs = document.getElementById("tabs");
+        var tabsInstance = M.Tabs.getInstance(tabs);
+        tabsInstance.select("test-swipe-2");
+        
+        // Print character info on second screen
+        $.ajax({
+        method: "GET",
+        url: "https://xivapi.com/character/"+varParent.attr("charid"), // Character ID
+        dataType: "json",
+        }).done(function(msg){
+        showDetails(msg);
+        }).fail(function(){
+        alert("Ajax Error");
+        });
+
+        M.updateTextFields();
+            
+    });
+    }
+
+    function showDetails(info) {
+    
+    $('#char-img').attr('src', info.Character.Avatar);
+    $('#char-name').text(info.Character.Name);
+    $('#bio').attr('value', info.Character.Bio);
+    $('#nameday').attr('value', info.Character.Nameday);
+    $('#job').attr('value', info.Character.ActiveClassJob.UnlockedState.Name);
+    $('#lvl').attr('value', info.Character.ActiveClassJob.Level);
+    $('#character').attr('src', info.Character.Portrait);
+
+    M.updateTextFields();
+
+    $('#char-img').on('click', function() {
+        var tabs = document.getElementById("tabs");
+        var tabsInstance = M.Tabs.getInstance(tabs);
+        tabsInstance.select("test-swipe-3");
+    });
+
+    }
+
+    function onDeviceReady() {
+        // Add event listeners to search.
+        $('#search-icon').on('click', searchChar);
+        $('#charName').on('keypress',function(e) {
+        if(e.which == 13) {
+            searchChar();
+        }
+        });
+    }
+  </script>
+
+</body>
+</html>
