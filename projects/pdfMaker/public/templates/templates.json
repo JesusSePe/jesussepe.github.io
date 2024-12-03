@@ -1,0 +1,13 @@
+{
+    "templates": [
+        {
+            "name": "test1",
+            "path": "public/templates/test1/test1.html",
+            "variables": [
+                "name",
+                "testImg",
+                "sampleTable"
+            ]
+        }
+    ]
+}

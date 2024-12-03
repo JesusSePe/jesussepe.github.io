@@ -1,0 +1,17 @@
+.soundboard-btn {
+    display: block;
+    position: relative;
+    background-color: white;
+    border-radius: 25px;
+    text-decoration: none;
+    border-width: 0px;
+    margin: 1.5em auto;
+    box-shadow: -1px 4px 1px #ccc;
+    padding: 0.5em 1em;
+}
+
+.soundboard-btn:active,
+.soundboard-btn:active:after {
+    bottom: -1px;
+    box-shadow: none;
+}
